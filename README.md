@@ -23,4 +23,5 @@ SimpleMouseTrackerExample
 ###Run js with [crp-reagenzglas](https://github.com/CrowdProcess/crp-reagenzglas): 
 
 ```bash
-   mak
+   make run-editor
+```
