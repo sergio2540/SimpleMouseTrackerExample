@@ -1,0 +1,20 @@
+{ "program" : { 
+ 
+		 "code" : "./build/laser.js",
+		 "compress" : "./lib/LZString.js",
+		 "data" : [
+				{ "input" : { 
+			      "argv"  : [],
+			      "files" : [ {
+					    "name" : "mouse.jpg",
+					    "content" : "../../photo/mouse.jpg"
+					  }
+					]
+			    },
+		  "output" : {
+			     }
+			
+	     }]
+}
+}
+
