@@ -1,0 +1,12 @@
+.git*
+c
+photo
+SimpleMouseTracker
+video
+crowdprocess/lib
+crowdprocess/build
+crowdprocess/data
+crowdprocess/results
+Makefile
+
+
