@@ -20,10 +20,11 @@ CC = cc
 CFLAGS=-O1
 
 #C sources
-SOURCES=laser.c 
+#SOURCES=laser.c 
+SOURCES=aux.c
 
 #Executable name
-EXEC=laser
+EXEC=aux
 
 LIBJS= ../crowdprocess/libs/libcv.a ../crowdprocess/libs/libcvaux.a ../crowdprocess/libs/libhighgui.a ../crowdprocess/libs/libcxcore.a ../crowdprocess/libs/libml.a
 
@@ -31,7 +32,7 @@ LIBJS= ../crowdprocess/libs/libcv.a ../crowdprocess/libs/libcvaux.a ../crowdproc
 #EMCC=path/to/emscripten/emcc
 #Example:
 #EMCC= /home/sergio/emscripten/emcc 
-EMCC=~/emscripten/emcc
+EMCC=/home/scob/src/emscripten/emcc
 
 #Flags for emscripten C compiler
 #-O<optimization level>
@@ -67,6 +68,7 @@ cp:
 	cd $(CROWDPROCESS_DIR)/pre/ &&\
 	cat ./data/data.json | gencpd --compress ./lib/LZString > ../$(DATA) && \
 	cat ./view/view.json | gencpp --template ./template/template.mustache > ../build/$(EXEC).js
+	node $(CROWDPROCESS_DIR)/build/aux.js
 
 run-editor:
 	reagenzglas -p $(CROWDPROCESS_DIR)/build/$(EXEC).js

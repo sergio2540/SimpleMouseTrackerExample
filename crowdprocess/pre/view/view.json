@@ -1,20 +1,32 @@
-{ "program" : { 
- 
-		 "code" : "./build/laser.js",
-		 "compress" : "./lib/LZString.js",
-		 "data" : [
-				{ "input" : { 
-			      "argv"  : [],
-			      "files" : [ {
-					    "name" : "mouse.jpg",
-					    "content" : "../../photo/mouse.jpg"
-					  }
-					]
-			    },
-		  "output" : {
-			     }
-			
-	     }]
+{
+  "program": {
+    "code": "./build/aux.js",
+    "compress": "./lib/LZString.js",
+    "data": [
+      {
+        "input": {
+          "argv": [],
+          "files": [
+            {
+              "name": "mouse.jpg",
+              "content": "../../photo/mouse1.jpg"
+            },            {
+              "name": "mask.jpg",
+              "content": "../../photo/mask.jpg"
+            },            {
+              "name": "mask_not.jpg",
+              "content": "../../photo/mask_not.jpg"
+            }
+          ]
+        },
+        "output": {
+          "files": [
+            {
+              "name": "/threshold.jpg"
+            }
+          ]
+        }
+      }
+    ]
+  }
 }
-}
-

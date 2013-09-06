@@ -136,3 +136,17 @@ Module['return']['output']['files'][dirname + basename ] = intArrayToString(FS.r
 
 return Module['return'];
 }
+
+var result = Run([]);
+
+// Reads threshold.jpg image from program output
+var content = result.output.files['/threshold.jpg'];
+var stdout = result.output.stdout;
+
+console.log("stdout: "+ stdout);
+var stderr = result.output.stderr;
+console.log("stderr: " + stderr)
+// Writes threshold.jpg image to local FS
+var fs = require('fs');
+fs.writeFileSync('threshold.jpg', content, 'binary');
+
