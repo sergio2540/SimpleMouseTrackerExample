@@ -57,7 +57,7 @@ function createTask(options) {
     var received = 0;
     var counter = 0;
 
-    var ffmpeg = spawn('ffmpeg', ['-i', 'video/video.mp4', '-y', '-f', 'image2pipe', '-']);
+    var ffmpeg = spawn('ffmpeg', ['-i', '../video/video.mp4', '-y', '-f', 'image2pipe', '-']);
 
     var obj = {};
     obj.input = {};
@@ -69,7 +69,7 @@ function createTask(options) {
     plucker(ffmpeg.stdout, function (error, image) {
 
       counter++;
-      //console.dir(image)
+      console.dir(image)
       var name = 'video.' + counter + '.jpg';
       var content = LZString.compress(image.toString('binary'));
 

@@ -77,6 +77,9 @@ run-node:
 run-io:
 	cat $(CROWDPROCESS_DIR)/data/data.json | crowdprocess io -p $(CROWDPROCESS_DIR)/build/aux.js > results.json
 
+run-video:
+	node $(CROWDPROCESS_DIR)/index.js
+
 run-editor:
 	reagenzglas -p $(CROWDPROCESS_DIR)/build/$(EXEC).min.js
 
