@@ -49,6 +49,7 @@ install:
 	sudo apt-get install python2.7
 	sudo apt-get install python-numpy
 	sudo apt-get install python-opencv
+	npm install -g
 
 step1:
 	python SimpleMouseTracker/create_project.py $(PROJ) $(VIDEO)
