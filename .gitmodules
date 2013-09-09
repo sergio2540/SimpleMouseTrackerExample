@@ -1,6 +1,3 @@
 [submodule "SimpleMouseTracker"]
 	path = SimpleMouseTracker
 	url = https://github.com/joseaccruz/SimpleMouseTracker
-[submodule "crp-video-resize"]
-	path = crp-video-resize
-	url = https://github.com/stigdreyer/crp-video-resize.git
