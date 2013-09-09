@@ -17,7 +17,7 @@ CROWDPROCESS_DIR= ./crowdprocess
 CC = cc
 
 #Flags to C compiler
-CFLAGS=-O1
+CFLAGS=-O0
 
 #C sources
 #SOURCES=laser.c 
@@ -32,16 +32,16 @@ LIBJS= ../crowdprocess/libs/libcv.a ../crowdprocess/libs/libcvaux.a ../crowdproc
 #EMCC=path/to/emscripten/emcc
 #Example:
 #EMCC= /home/sergio/emscripten/emcc 
-EMCC=/home/scob/src/emscripten/emcc
+EMCC=path/to/emscripten/emcc
 
 #Flags for emscripten C compiler
 #-O<optimization level>
 #See: https://github.com/kripken/emscripten/wiki/Optimizing-Code
-EMCCFLAGS=-O1
+EMCCFLAGS=-O3
 
 #Various compiling-to-JS parameters.
 #See https://github.com/kripken/emscripten/blob/master/src/settings.js
-SETTINGS= -s BUILD_AS_WORKER=1 -s ASMJS=1 -s INVOKE_RUN=0
+SETTINGS= -s ASMJS=1 -s INVOKE_RUN=0
 
 DATA= ./data/data.json
 
@@ -72,4 +72,11 @@ cp:
 
 run-editor:
 	reagenzglas -p $(CROWDPROCESS_DIR)/build/$(EXEC).js
+
+clean:
+	rm -rf $(CROWDPROCESS_DIR)/build
+	rm -rf $(CROWDPROCESS_DIR)/data
+	rm -rf $(CROWDPROCESS_DIR)/pre/build
+	rm -rf $(CROWDPROCESS_DIR)/results
+	
 
