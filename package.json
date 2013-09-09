@@ -23,12 +23,11 @@
     "through": "~2.3.4",
     "JSONStream": "~0.6.4",
     "event-stream": "~3.0.16",
-    "mustache": "~0.7.2"
-  },
-  "devDependencies": {
-    "grunt": "~0.4.1",
-    "grunt-contrib-watch": "~0.5.1",
-    "grunt-shell": "~0.3.1",
-    "tape": "~1.0.4"
+    "mustache": "~0.7.2",
+    "uglify-js": "~2.4.0",    
+    "crp-task-producer-client": "*",
+    "crp-task-client": "*",
+    "crp-auth-client": "*",
+    "png-plucker" : "https://github.com/stigdreyer/png-plucker/archive/master.tar.gz"
   }
 }

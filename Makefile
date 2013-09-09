@@ -37,7 +37,7 @@ EMCC=path/to/emscripten/emcc
 #Flags for emscripten C compiler
 #-O<optimization level>
 #See: https://github.com/kripken/emscripten/wiki/Optimizing-Code
-EMCCFLAGS=-O3
+EMCCFLAGS=-O2
 
 #Various compiling-to-JS parameters.
 #See https://github.com/kripken/emscripten/blob/master/src/settings.js
@@ -68,10 +68,16 @@ cp:
 	cd $(CROWDPROCESS_DIR)/pre/ &&\
 	cat ./data/data.json | gencpd --compress ./lib/LZString > ../$(DATA) && \
 	cat ./view/view.json | gencpp --template ./template/template.mustache > ../build/$(EXEC).js
-	node $(CROWDPROCESS_DIR)/build/aux.js
+	uglifyjs $(CROWDPROCESS_DIR)/build/aux.js -o $(CROWDPROCESS_DIR)/build/aux.min.js -c -m --screw-ie8 
+
+run-node:
+	node $(CROWDPROCESS_DIR)/build/aux.min.js 
+
+run-io:
+	cat $(CROWDPROCESS_DIR)/data/data.json | crowdprocess io -p $(CROWDPROCESS_DIR)/build/aux.js > results.json
 
 run-editor:
-	reagenzglas -p $(CROWDPROCESS_DIR)/build/$(EXEC).js
+	reagenzglas -p $(CROWDPROCESS_DIR)/build/$(EXEC).min.js
 
 clean:
 	rm -rf $(CROWDPROCESS_DIR)/build
