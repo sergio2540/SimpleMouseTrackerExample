@@ -14,7 +14,14 @@ SimpleMouseTrackerExample
  * [HOWTO: Port a C/C++ Library to JavaScript (xml.js)@blog.mozakai](http://mozakai.blogspot.pt/2012/03/howto-port-cc-library-to-javascript.html)
  * [Simple Mouse Tracker](https://github.com/joseaccruz/SimpleMouseTracker)
  
- ###Compile js code: 
+
+###Install:
+
+```bash 
+  make install
+```
+
+###Compile js code: 
 
 ```bash 
   make cp EMCC=path/to/emscripten/emcc
@@ -24,4 +31,10 @@ SimpleMouseTrackerExample
 
 ```bash
    make run-editor
+```
+
+###Run in node: 
+
+```bash
+   make run-node
 ```
