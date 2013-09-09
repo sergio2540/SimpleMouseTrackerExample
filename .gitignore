@@ -1,0 +1,9 @@
+node_modules
+c/build
+crowdprocess/build
+crowdprocess/data
+crowdprocess/results
+crowdprocess/pre/build
+
+
+
