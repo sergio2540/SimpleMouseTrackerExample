@@ -8,7 +8,8 @@
   "bin": {
     "gencpd": "./crowdprocess/pre/bin/gencpd",
     "gencpp": "./crowdprocess/pre/bin/gencpp",
-    "uglifyjs": "./node_modules/uglify-js/bin/uglifyjs"
+    "uglifyjs": "./node_modules/uglify-js/bin/uglifyjs",
+    "crowdprocess" : "./node_modules/index.js"
   },
   "author": "Sérgio Alves",
   "license": "BSD",
@@ -29,6 +30,7 @@
     "crp-task-producer-client": "*",
     "crp-task-client": "*",
     "crp-auth-client": "*",
-    "png-plucker": "https://github.com/stigdreyer/png-plucker/archive/master.tar.gz"
+    "png-plucker": "https://github.com/stigdreyer/png-plucker/archive/master.tar.gz",
+    "crowdprocess-cli": "~0.7.12"
   }
 }
