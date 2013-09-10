@@ -21,10 +21,11 @@ int main(int argc, char* argv[]){
   int height = mouse->height;
   int depth = mouse->depth;
   int nChannels = mouse->nChannels;
+  printf("\n\n");
   printf("width: %d\n", width);
   printf("height: %d\n", height);
   IplImage *hsv = cvCreateImage(cvSize(width,height),depth,3);
-  printf("channels hsv: %d\n",mask->nChannels);
+  // printf("channels hsv: %d\n",mask->nChannels);
   IplImage *hue = cvCreateImage(cvSize(width , height), depth, 1);
   IplImage *sat = cvCreateImage(cvSize(width , height), depth, 1);
   IplImage *img = cvCreateImage(cvSize(width , height), depth, 1);
@@ -45,8 +46,8 @@ int main(int argc, char* argv[]){
   // get only the arena
   cvAnd(threshold , mask, bitwise_and, NULL);
 
-  printf("bitwise_and: width: %d\n", bitwise_and->width);
-  printf("bitwise_and: height: %d\n", bitwise_and->height);
+  // printf("bitwise_and: width: %d\n", bitwise_and->width);
+  // printf("bitwise_and: height: %d\n", bitwise_and->height);
   // clean up noise
   int cols = 3;
   int rows = 3;
@@ -77,13 +78,19 @@ int main(int argc, char* argv[]){
 
 
   IplImage *contourImg = cvCreateImage(cvSize(width , height), depth, 3);
-
+  
+  int i = 0;
   for ( ; contour != 0; contour = contour->h_next ) {
+    i++;
+    double contourArea = fabs( cvContourArea(contour, CV_WHOLE_SEQ) );
+    printf("Contour Area %d: %f\n", i, contourArea);
+    // cvMoments(const CvArr* arr, CvMoments* moments, int binary=0 )
+    
     CvScalar externalColor = CV_RGB( 255, 255, 255 );
     CvScalar internalColor = CV_RGB( 0, rand()&255, 0 );
     cvDrawContours(contourImg, contour, externalColor, internalColor, -1, 2, 8 , offset);
-    printf("Countour->total: %d\n", contour->total);
-    printf("Countour->elem_size: %d\n", contour->elem_size);
+    // printf("Countour->total: %d\n", contour->total);
+    // printf("Countour->elem_size: %d\n", contour->elem_size);
 
   }
   // save image

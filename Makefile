@@ -32,7 +32,7 @@ LIBJS= ../crowdprocess/libs/libcv.a ../crowdprocess/libs/libcvaux.a ../crowdproc
 #EMCC=path/to/emscripten/emcc
 #Example:
 #EMCC= /home/sergio/emscripten/emcc 
-EMCC=path/to/emscripten/emcc
+EMCC=~/utils/emscripten/emcc
 
 #Flags for emscripten C compiler
 #-O<optimization level>
@@ -67,21 +67,24 @@ cp:
 	cd $(C_DIR) && \
 	$(EMCC) $(EMCCFLAGS) $(SOURCES) ../$(CROWDPROCESS_DIR)/$(LIBJS) $(SETTINGS) -o ../$(CROWDPROCESS_DIR)/pre/build/$(EXEC).js
 	cd $(CROWDPROCESS_DIR)/pre/ &&\
-	cat ./data/data.json | gencpd --compress ./lib/LZString > ../$(DATA) && \
-	cat ./view/view.json | gencpp --template ./template/template.mustache > ../build/$(EXEC).js
-	uglifyjs $(CROWDPROCESS_DIR)/build/aux.js -o $(CROWDPROCESS_DIR)/build/aux.min.js -c -m --screw-ie8 
+	cat ./data/data.json | gencpd --compress ./lib/LZString > $(DATA) && \
+	cat ./view/view.json | gencpp --template ./template/template-node.mustache > ../build/$(EXEC)-node.js && \
+	cat ./view/view.json | gencpp --template ./template/template-crowdprocess.mustache > ../build/$(EXEC)-crowdprocess.js
+	uglifyjs $(CROWDPROCESS_DIR)/build/$(EXEC)-node.js -o $(CROWDPROCESS_DIR)/build/$(EXEC)-node.min.js -c --screw-ie8 
+	uglifyjs $(CROWDPROCESS_DIR)/build/$(EXEC)-crowdprocess.js -o $(CROWDPROCESS_DIR)/build/$(EXEC)-crowdprocess.min.js -c --screw-ie8 
 
 run-node:
-	node $(CROWDPROCESS_DIR)/build/aux.min.js 
+	node $(CROWDPROCESS_DIR)/build/aux-node.js 
 
 run-io:
-	cat $(CROWDPROCESS_DIR)/data/data.json | crowdprocess io -p $(CROWDPROCESS_DIR)/build/aux.js > results.json
+	cat $(CROWDPROCESS_DIR)/data/data.json | crowdprocess io -p $(CROWDPROCESS_DIR)/build/aux-crowdprocess.js > results.json
 
 run-video:
 	node $(CROWDPROCESS_DIR)/index.js
 
 run-editor:
-	reagenzglas -p $(CROWDPROCESS_DIR)/build/$(EXEC).min.js
+	# reagenzglas -p $(CROWDPROCESS_DIR)/build/$(EXEC)-crowdprocess.min.js
+	reagenzglas -p $(CROWDPROCESS_DIR)/build/$(EXEC)-crowdprocess.js
 
 clean:
 	rm -rf $(CROWDPROCESS_DIR)/build
