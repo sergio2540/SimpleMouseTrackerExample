@@ -21,8 +21,8 @@ var LZString = {
     input = this.compress(input);
     
     while (i < input.length*2) {
-      
-      if (i%2==0) {
+
+      if (i%2===0) {
         chr1 = input.charCodeAt(i/2) >> 8;
         chr2 = input.charCodeAt(i/2) & 255;
         if (i/2+1 < input.length) 
@@ -80,7 +80,7 @@ var LZString = {
       chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
       chr3 = ((enc3 & 3) << 6) | enc4;
       
-      if (ol%2==0) {
+      if (ol%2===0) {
         output_ = chr1 << 8;
         flush = true;
         
@@ -354,7 +354,7 @@ var LZString = {
             }
           }
           context_enlargeIn--;
-          if (context_enlargeIn == 0) {
+          if (context_enlargeIn === 0) {
             context_enlargeIn = Math.pow(2, context_numBits);
             context_numBits++;
           }
@@ -376,7 +376,7 @@ var LZString = {
           
         }
         context_enlargeIn--;
-        if (context_enlargeIn == 0) {
+        if (context_enlargeIn === 0) {
           context_enlargeIn = Math.pow(2, context_numBits);
           context_numBits++;
         }
@@ -439,7 +439,7 @@ var LZString = {
           }
         }
         context_enlargeIn--;
-        if (context_enlargeIn == 0) {
+        if (context_enlargeIn === 0) {
           context_enlargeIn = Math.pow(2, context_numBits);
           context_numBits++;
         }
@@ -461,7 +461,7 @@ var LZString = {
         
       }
       context_enlargeIn--;
-      if (context_enlargeIn == 0) {
+      if (context_enlargeIn === 0) {
         context_enlargeIn = Math.pow(2, context_numBits);
         context_numBits++;
       }
@@ -519,15 +519,16 @@ var LZString = {
     while (power!=maxpower) {
       resb = data.val & data.position;
       data.position >>= 1;
-      if (data.position == 0) {
+      if (data.position === 0) {
         data.position = 32768;
         data.val = data.string.charCodeAt(data.index++);
       }
       bits |= (resb>0 ? 1 : 0) * power;
       power <<= 1;
     }
-    
-    switch (next = bits) {
+
+    next = bits;
+    switch (next) {
       case 0: 
           bits = 0;
           maxpower = Math.pow(2,8);
@@ -535,7 +536,7 @@ var LZString = {
           while (power!=maxpower) {
             resb = data.val & data.position;
             data.position >>= 1;
-            if (data.position == 0) {
+            if (data.position === 0) {
               data.position = 32768;
               data.val = data.string.charCodeAt(data.index++);
             }
@@ -551,7 +552,7 @@ var LZString = {
           while (power!=maxpower) {
             resb = data.val & data.position;
             data.position >>= 1;
-            if (data.position == 0) {
+            if (data.position === 0) {
               data.position = 32768;
               data.val = data.string.charCodeAt(data.index++);
             }
@@ -572,15 +573,15 @@ var LZString = {
       while (power!=maxpower) {
         resb = data.val & data.position;
         data.position >>= 1;
-        if (data.position == 0) {
+        if (data.position === 0) {
           data.position = 32768;
           data.val = data.string.charCodeAt(data.index++);
         }
         bits |= (resb>0 ? 1 : 0) * power;
         power <<= 1;
       }
-
-      switch (c = bits) {
+      c = bits;
+      switch (c) {
         case 0: 
           if (errorCount++ > 10000) return "Error";
           bits = 0;
@@ -589,7 +590,7 @@ var LZString = {
           while (power!=maxpower) {
             resb = data.val & data.position;
             data.position >>= 1;
-            if (data.position == 0) {
+            if (data.position === 0) {
               data.position = 32768;
               data.val = data.string.charCodeAt(data.index++);
             }
@@ -608,7 +609,7 @@ var LZString = {
           while (power!=maxpower) {
             resb = data.val & data.position;
             data.position >>= 1;
-            if (data.position == 0) {
+            if (data.position === 0) {
               data.position = 32768;
               data.val = data.string.charCodeAt(data.index++);
             }
@@ -623,7 +624,7 @@ var LZString = {
           return result;
       }
       
-      if (enlargeIn == 0) {
+      if (enlargeIn === 0) {
         enlargeIn = Math.pow(2, numBits);
         numBits++;
       }
@@ -645,7 +646,7 @@ var LZString = {
       
       w = entry;
       
-      if (enlargeIn == 0) {
+      if (enlargeIn === 0) {
         enlargeIn = Math.pow(2, numBits);
         numBits++;
       }
