@@ -9,7 +9,7 @@
     "gencpd": "./crowdprocess/pre/bin/gencpd",
     "gencpp": "./crowdprocess/pre/bin/gencpp",
     "uglifyjs": "./node_modules/uglify-js/bin/uglifyjs",
-    "crowdprocess" : "./node_modules/index.js"
+    "crowdprocess" : "./node_modules/crowdprocess-cli/index.js"
   },
   "author": "Sérgio Alves",
   "license": "BSD",
