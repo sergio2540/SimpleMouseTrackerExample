@@ -1,6 +1,10 @@
 SimpleMouseTrackerExample
 =========================
 
+This is a demo on how to use emscripten to create javascript code from native openCV code. 
+A frame from a mouse behaviour video experiment is loaded with openCV and the contour of the mouse is extracted.
+The output of the program is a jpg file in SimpleMouseTrackerExample/contour.jpg 
+
 ##Requirements:
   * [Emscripten](https://github.com/kripken/emscripten/wiki/Tutorial)
   * [crp-reagenzglas](https://github.com/CrowdProcess/crp-reagenzglas)
@@ -25,12 +29,6 @@ SimpleMouseTrackerExample
 
 ```bash 
   make cp EMCC=path/to/emscripten/emcc
-```
-
-###Run js with [crp-reagenzglas](https://github.com/CrowdProcess/crp-reagenzglas): 
-
-```bash
-   make run-editor
 ```
 
 ###Run in node: 
