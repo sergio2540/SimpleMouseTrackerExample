@@ -10,15 +10,19 @@ var spawn = require('child_process').spawn;
 
 var LZString = require('./pre/lib/LZString');
 
+// Authentication credentials
+var userEmail = 'email';
+var userPwd = 'password';
+
 //Authentication using your CrowdProcess login information
-AuthClient.login('email', 'password', function(err, credential) {
+AuthClient.login(userEmail, userPwd, function(err, credential) {
 	if (err) throw err;
 
 	//Options for creating task and dataunit stream
   //Change program.js
   	var options = {
 	   bid: 1,
-	   program: fs.readFileSync('./crowdprocess/build/aux.js', 'utf8'), //Reads source code for Run(data) function from file
+	   program: fs.readFileSync('./crowdprocess/build/aux-crowdprocess.js', 'utf8'), //Reads source code for Run(data) function from file
 	   credential: credential
 	};
 
@@ -57,7 +61,7 @@ function createTask(options) {
     var received = 0;
     var counter = 0;
 
-    var ffmpeg = spawn('ffmpeg', ['-i', '../video/video.mp4', '-y', '-f', 'image2pipe', '-']);
+    var ffmpeg = spawn('ffmpeg', ['-i', './video/video.mp4', '-y', '-f', 'image2pipe', '-']);
 
     var obj = {};
     obj.input = {};
@@ -69,7 +73,9 @@ function createTask(options) {
     plucker(ffmpeg.stdout, function (error, image) {
 
       counter++;
-      console.dir(image)
+      console.log(counter);
+      // fs.writeFile('./img/file'+counter+'.png', image);
+      console.dir(image);
       var name = 'video.' + counter + '.jpg';
       var content = LZString.compress(image.toString('binary'));
 
