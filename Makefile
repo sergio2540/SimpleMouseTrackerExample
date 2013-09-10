@@ -43,7 +43,7 @@ EMCCFLAGS=-O2
 #See https://github.com/kripken/emscripten/blob/master/src/settings.js
 SETTINGS= -s ASMJS=1 -s INVOKE_RUN=0
 
-DATA= ./data/data.json
+DATA= ../data/data.json
 
 install:
 	sudo apt-get install python2.7
