@@ -78,21 +78,39 @@ int main(int argc, char* argv[]){
 
 
   IplImage *contourImg = cvCreateImage(cvSize(width , height), depth, 3);
-  
+
   int i = 0;
+
+  CvMoments moments;
+
+  int Cx;
+  int Cy;
+
+  //Declare point
+
   for ( ; contour != 0; contour = contour->h_next ) {
     i++;
     double contourArea = fabs( cvContourArea(contour, CV_WHOLE_SEQ) );
     printf("Contour Area %d: %f\n", i, contourArea);
-    // cvMoments(const CvArr* arr, CvMoments* moments, int binary=0 )
-    
+    cvMoments(contour, &moments, 0);
+
+    Cx = moments.m10/moments.m00;
+    Cy = moments.m01/moments.m00;
+
+    cvCircle(mouse, cvPoint(Cx,Cy), 10, CV_RGB( 255, 0, 0 ), -1, 8, 0);
+
+    //get Nose ( most distant point to the centroid )
+    //contour->CvMemStorage
+
+
     CvScalar externalColor = CV_RGB( 255, 255, 255 );
     CvScalar internalColor = CV_RGB( 0, rand()&255, 0 );
-    cvDrawContours(contourImg, contour, externalColor, internalColor, -1, 2, 8 , offset);
+    cvDrawContours(contourImg, contour, externalColor, internalColor, 1, 2, 8 , offset);
     // printf("Countour->total: %d\n", contour->total);
     // printf("Countour->elem_size: %d\n", contour->elem_size);
 
   }
   // save image
-  cvSaveImage("threshold.jpg", contourImg);
+  cvSaveImage("threshold.jpg", mouse);
+
 }
