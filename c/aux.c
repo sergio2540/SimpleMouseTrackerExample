@@ -1,42 +1,73 @@
 #include "cv.h"
 #include "highgui.h"
 #include <stdio.h>
+#include <math.h>
+
+float norm(int Cx, int Cy, int px, int py){
+
+  float val = sqrt((Cx - px)*(Cx - px) + (Cy - py)*(Cy - py));
+
+  return val;
+}
+
+CvPoint* getFurthestPoint(CvSeq *contour, int Cx, int Cy){
+
+  CvPoint *r=NULL, *n=NULL;
+
+  int j;
+  
+  float maxNorm = 0.0;
+  float currNorm = 0.0;
+
+
+  for(j = 0; j < contour->total; j++ ){
+
+      r = CV_GET_SEQ_ELEM( CvPoint, contour, j );
+
+      currNorm = norm(Cx, Cy, r->x, r->y);
+
+      if (currNorm > maxNorm) {
+        n = r;
+        maxNorm = currNorm;
+      }
+
+    }
+
+    return n;
+}
+
 
 
 // args: img, mask, mask_not, thresh1, thresh2
 int main(int argc, char* argv[]){
 
-
   //Extract the color information
   IplImage *mouse = cvLoadImage("mouse.jpg",CV_LOAD_IMAGE_COLOR);
-
 
   //Load masks 
   IplImage *mask = cvLoadImage("mask.jpg", CV_LOAD_IMAGE_GRAYSCALE);
   IplImage *mask_not = cvLoadImage("mask_not.jpg", CV_LOAD_IMAGE_GRAYSCALE);
-  //const CvArr* img = argv[1];
-  //const CvArr* mask = argv[2];
 
+  //get mouse image info
   int width = mouse->width;
   int height = mouse->height;
   int depth = mouse->depth;
   int nChannels = mouse->nChannels;
+
   printf("\n\n");
   printf("width: %d\n", width);
   printf("height: %d\n", height);
-  IplImage *hsv = cvCreateImage(cvSize(width,height),depth,3);
-  // printf("channels hsv: %d\n",mask->nChannels);
+
+  IplImage *hsv = cvCreateImage(cvSize(width, height),depth,3);
   IplImage *hue = cvCreateImage(cvSize(width , height), depth, 1);
   IplImage *sat = cvCreateImage(cvSize(width , height), depth, 1);
   IplImage *img = cvCreateImage(cvSize(width , height), depth, 1);
 
   cvCvtColor(mouse, hsv, CV_RGB2HSV);
-  cvSplit(hsv,hue,sat,img,(CvArr*) NULL);
+  cvSplit(hsv, hue, sat, img, (CvArr*) NULL);
 
-  //
-  //  get a rough region around the mouse using the first threshold
-  //
-  double thresh1 = 70; // argv[3];
+  //get a rough region around the mouse using the first threshold
+  double thresh1 = 70;
   IplImage *threshold = cvCreateImage(cvSize(img->width,img->height),img->depth,1);
   double max_value = 255;
   cvThreshold(img, threshold, thresh1, max_value, CV_THRESH_BINARY_INV);
@@ -46,8 +77,6 @@ int main(int argc, char* argv[]){
   // get only the arena
   cvAnd(threshold , mask, bitwise_and, NULL);
 
-  // printf("bitwise_and: width: %d\n", bitwise_and->width);
-  // printf("bitwise_and: height: %d\n", bitwise_and->height);
   // clean up noise
   int cols = 3;
   int rows = 3;
@@ -59,12 +88,13 @@ int main(int argc, char* argv[]){
   IplImage *erode = cvCreateImage(cvSize(width , height), depth, 1);
   int iterations = 2;
   cvErode(bitwise_and, erode, kernel, iterations);
+  
   // Enlarge the interest region
   cols = 4;
   rows = 4;
   kernel = cvCreateStructuringElementEx(cols, rows, anchor_x, anchor_y, shape, NULL );
   IplImage *dilate = cvCreateImage(cvSize(width , height), depth, 1);
-  cvDilate(erode, dilate, kernel, 10);
+  cvDilate(erode, dilate, kernel, 5);
   
   // get the blobs
   CvMemStorage* storage = cvCreateMemStorage(0);
@@ -76,41 +106,79 @@ int main(int argc, char* argv[]){
   int nContours = cvFindContours(dilate, storage, &contour, header_size, CV_RETR_LIST, method, offset );
   printf("Number of contours: %d\n", nContours);
 
-
   IplImage *contourImg = cvCreateImage(cvSize(width , height), depth, 3);
 
   int i = 0;
 
-  CvMoments moments;
-
+  //Declare centroid and moments structure
   int Cx;
   int Cy;
+  //nose and tail index
+  CvPoint *nosePoint = NULL, *tailPoint = NULL;
+  //int *nx, *ny, tx, ty;
 
-  //Declare point
+  CvMoments moments;
 
   for ( ; contour != 0; contour = contour->h_next ) {
     i++;
     double contourArea = fabs( cvContourArea(contour, CV_WHOLE_SEQ) );
-    printf("Contour Area %d: %f\n", i, contourArea);
+    
+    printf("Contour Area %d: %g\n", i, contourArea);
     cvMoments(contour, &moments, 0);
 
     Cx = moments.m10/moments.m00;
     Cy = moments.m01/moments.m00;
 
+    printf("centroid: (%d,%d) \n", Cx,Cy);
+
     cvCircle(mouse, cvPoint(Cx,Cy), 10, CV_RGB( 255, 0, 0 ), -1, 8, 0);
 
     //get Nose ( most distant point to the centroid )
-    //contour->CvMemStorage
+    nosePoint = getFurthestPoint(contour, Cx, Cy);
+    tailPoint = getFurthestPoint(contour, nosePoint->x, nosePoint->y);
 
+    printf("nose (maybe): (%d,%d) \n", nosePoint->x, nosePoint->y);
+    printf("tail (maybe): (%d,%d) \n", tailPoint->x, tailPoint->y);
+
+    cvCircle(mouse, cvPoint(nosePoint->x, nosePoint->y), 5, CV_RGB( 0, 255, 0 ), -1, 8, 0);
+    cvCircle(mouse, cvPoint(tailPoint->x, tailPoint->y), 5, CV_RGB( 0, 255, 0 ), -1, 8, 0);
 
     CvScalar externalColor = CV_RGB( 255, 255, 255 );
-    CvScalar internalColor = CV_RGB( 0, rand()&255, 0 );
-    cvDrawContours(contourImg, contour, externalColor, internalColor, 1, 2, 8 , offset);
-    // printf("Countour->total: %d\n", contour->total);
-    // printf("Countour->elem_size: %d\n", contour->elem_size);
+    CvScalar internalColor = CV_RGB( 0, 10, 0 );
+    cvDrawContours(mouse, contour, externalColor, internalColor, 1, 2, 8 , offset);
 
   }
+
   // save image
   cvSaveImage("threshold.jpg", mouse);
+
+  cvReleaseImage(&mouse);
+  cvReleaseImage(&mask);
+  cvReleaseImage(&mask_not);
+
+  cvReleaseImage(&hsv);
+  cvReleaseImage(&hue);
+  cvReleaseImage(&sat);
+  cvReleaseImage(&img);
+  cvReleaseImage(&threshold);
+
+  cvReleaseImage(&bitwise_and);
+  cvReleaseImage(&threshold);
+  cvReleaseImage(&erode);
+  cvReleaseImage(&dilate);
+  cvReleaseImage(&contourImg);
+
+
+
+
+
+  
+
+
+
+
+
+
+
 
 }
