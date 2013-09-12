@@ -43,13 +43,13 @@ EMCCFLAGS=-O2
 #See https://github.com/kripken/emscripten/blob/master/src/settings.js
 SETTINGS= -s ASMJS=1 -s INVOKE_RUN=0
 
-DATA= ./data/data.json
+DATA= ../data/data.json
 
 install:
 	sudo apt-get install python2.7
 	sudo apt-get install python-numpy
 	sudo apt-get install python-opencv
-	npm link
+	sudo npm link
 
 step1:
 	python SimpleMouseTracker/create_project.py $(PROJ) $(VIDEO)
@@ -59,6 +59,9 @@ step3:
 	python SimpleMouseTracker/get_data.py -s $(PROJ)
 step4:
 	python SimpleMouseTracker/get_data.py -j $(FRAME) -d $(INTERVAL) $(PROJ)
+
+exec:
+	gcc -g -o $(EXEC) c/$(EXEC).c `pkg-config opencv --cflags --libs`
 
 cp:
 	mkdir -p $(CROWDPROCESS_DIR)/build
