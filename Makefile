@@ -60,6 +60,9 @@ step3:
 step4:
 	python SimpleMouseTracker/get_data.py -j $(FRAME) -d $(INTERVAL) $(PROJ)
 
+exec:
+	gcc -g -o $(EXEC) c/$(EXEC).c `pkg-config opencv --cflags --libs`
+
 cp:
 	mkdir -p $(CROWDPROCESS_DIR)/build
 	mkdir -p $(CROWDPROCESS_DIR)/data
