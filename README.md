@@ -14,6 +14,12 @@ The output of the program is a jpg file in SimpleMouseTrackerExample/contour.jpg
   make install
 ```
 
+###Compile c code: 
+
+```bash 
+  make exec
+```
+
 ###Compile js code: 
 
 ```bash 
