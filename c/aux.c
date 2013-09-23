@@ -71,11 +71,6 @@ int main(int argc, char* argv[]){
   IplImage *threshold = cvCreateImage(cvSize(img->width,img->height),img->depth,1);
   double max_value = 255;
   cvThreshold(img, threshold, thresh1, max_value, CV_THRESH_BINARY_INV);
-  
-  IplImage *bitwise_and = cvCreateImage(cvSize(width , height), depth, 1);
-
-  // get only the arena
-  cvAnd(threshold , mask, bitwise_and, NULL);
 
   // clean up noise
   int cols = 3;
@@ -87,7 +82,7 @@ int main(int argc, char* argv[]){
   
   IplImage *erode = cvCreateImage(cvSize(width , height), depth, 1);
   int iterations = 2;
-  cvErode(bitwise_and, erode, kernel, iterations);
+  cvErode(threshold, erode, kernel, iterations);
   
   // Enlarge the interest region
   cols = 4;
