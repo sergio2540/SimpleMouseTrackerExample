@@ -157,7 +157,6 @@ int main(int argc, char* argv[]){
   cvReleaseImage(&img);
   cvReleaseImage(&threshold);
 
-  cvReleaseImage(&bitwise_and);
   cvReleaseImage(&threshold);
   cvReleaseImage(&erode);
   cvReleaseImage(&dilate);
