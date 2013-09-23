@@ -44,10 +44,6 @@ int main(int argc, char* argv[]){
   //Extract the color information
   IplImage *mouse = cvLoadImage("mouse.jpg",CV_LOAD_IMAGE_COLOR);
 
-  //Load masks 
-  IplImage *mask = cvLoadImage("mask.jpg", CV_LOAD_IMAGE_GRAYSCALE);
-  IplImage *mask_not = cvLoadImage("mask_not.jpg", CV_LOAD_IMAGE_GRAYSCALE);
-
   //get mouse image info
   int width = mouse->width;
   int height = mouse->height;
@@ -148,8 +144,6 @@ int main(int argc, char* argv[]){
   cvSaveImage("threshold.jpg", mouse);
 
   cvReleaseImage(&mouse);
-  cvReleaseImage(&mask);
-  cvReleaseImage(&mask_not);
 
   cvReleaseImage(&hsv);
   cvReleaseImage(&hue);
@@ -161,18 +155,5 @@ int main(int argc, char* argv[]){
   cvReleaseImage(&erode);
   cvReleaseImage(&dilate);
   cvReleaseImage(&contourImg);
-
-
-
-
-
-  
-
-
-
-
-
-
-
 
 }
