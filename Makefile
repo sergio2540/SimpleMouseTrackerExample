@@ -41,7 +41,7 @@ EMCCFLAGS=-O2
 
 #Various compiling-to-JS parameters.
 #See https://github.com/kripken/emscripten/blob/master/src/settings.js
-SETTINGS= -s ASMJS=1 -s INVOKE_RUN=0
+SETTINGS= -s ASMJS=1 -s INVOKE_RUN=0 -s TOTAL_MEMORY=8*16777216
 
 DATA= ../data/data.json
 
