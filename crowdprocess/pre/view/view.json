@@ -10,12 +10,6 @@
             {
               "name": "mouse.jpg",
               "content": "../../photo/mouse1.jpg"
-            },            {
-              "name": "mask.jpg",
-              "content": "../../photo/mask.jpg"
-            },            {
-              "name": "mask_not.jpg",
-              "content": "../../photo/mask_not.jpg"
             }
           ]
         },
