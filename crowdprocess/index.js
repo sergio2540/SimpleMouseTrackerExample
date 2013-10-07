@@ -16,33 +16,34 @@ var userPwd = 'password';
 
 //Authentication using your CrowdProcess login information
 AuthClient.login(userEmail, userPwd, function(err, credential) {
-	if (err) throw err;
+  if (err) throw err;
 
-	//Options for creating task and dataunit stream
+  //Options for creating task and dataunit stream
   //Change program.js
-  	var options = {
-	   bid: 1,
-	   program: fs.readFileSync('./crowdprocess/build/aux-crowdprocess.js', 'utf8'), //Reads source code for Run(data) function from file
-	   credential: credential
-	};
+    var options = {
+     bid: 1,
+     program: fs.readFileSync('./crowdprocess/build/aux-crowdprocess.js', 'utf8'), //Reads source code for Run(data) function from file
+     credential: credential
+  };
 
-	createTask(options);
+  createTask(options);
 });
 
 function createTask(options) {
 
-	var taskClient = TaskClient({
-    	credential: options.credential
-    });
-
-	//Create CrowdProcess task
-	taskClient.tasks.create({
-    	bid: options.bid,
-    	program: options.program
+  var taskClient = TaskClient({
+    credential: options.credential
+  });
+  console.log('Before create task')
+  //Create CrowdProcess task
+  taskClient.tasks.create({
+      bid: options.bid,
+      program: options.program
     }, afterTaskCreated);
 
-	function afterTaskCreated(err, task) {
+  function afterTaskCreated(err, task) {
     if (err) throw err;
+    console.log('task criada');
 
     //Create dataunit stream to send dataunits directly to CrowdProcess
     var stream = TaskProducerClient({
@@ -60,65 +61,69 @@ function createTask(options) {
     var sent = 0;
     var received = 0;
     var counter = 0;
-
+    console.log('xpto');
     var ffmpeg = spawn('ffmpeg', ['-i', './video/video.mp4', '-y', '-f', 'image2pipe', '-']);
 
-    var obj = {};
-    obj.input = {};
-    obj.input.argv = [];
-    obj.input.files = [];
+    console.log('xpto2');
 
-    
-    
     plucker(ffmpeg.stdout, function (error, image) {
+      var obj = {};
+      obj.input = {};
+      obj.input.argv = [];
+      obj.input.files = [];
+      obj.output = {};
+      obj.output.files = [];
 
       counter++;
-      console.log(counter);
       // fs.writeFile('./img/file'+counter+'.png', image);
-      console.dir(image);
       var name = 'video.' + counter + '.jpg';
       var content = LZString.compress(image.toString('binary'));
 
       obj.input.argv.push({arg:name, pos:obj.input.argv.length});
-      obj.input.files.push({name:name, content:content});
+      obj.input.files.push({name:name, content:content, compress:true});
 
+      obj.output.files.push({name: name});
      
-      	if(sent == 0){
-      		console.log("write")
-        	stream.write(obj);
-      	}
-
-        sent++;
-
-        obj.input.argv = [];
-        obj.input.files = [];     
-
+      // if(sent == 0){
+      //   console.log("write")
+      //   stream.write(obj);
+      // }
       
+      if(sent < 800){
+        console.log("sent", sent+1);
+        console.log(">> Data Sent: ", obj);
+        fs.writeFileSync("./results" + '/objsent' + sent, JSON.stringify(obj), 'UTF-8');
+        stream.write(obj);
+        sent++;
+      }
+
+
+      obj.input.argv = [];
+      obj.input.files = [];
 
     });
 
     //Receive results from CrowdProcess
     stream.on('result', function(data) {
-
-    	received++;
-
+      console.log('result has come!')
+      received++;
+      console.log('Data: ', data);
       for(name in data.output.files) {
-
-	    	fs.writeFileSync("./results_" + name, data.output.files[name], 'binary');
-
-      }  	
+        console.log(name);
+        fs.writeFileSync("./results" + name, data.output.files[name], 'binary');
+      }
 
     });
 
     //Result stream from CrowdProcess ended
     stream.once('end', function() {
 
-    	//Did not receive all dataunits
-    	if (sent != received) console.error('Only received %d of the %d dataunits sent.', received, sent);
+      //Did not receive all dataunits
+      if (sent != received) console.error('Only received %d of the %d dataunits sent.', received, sent);
 
     });
 
-	}
+  }
 
 }
 

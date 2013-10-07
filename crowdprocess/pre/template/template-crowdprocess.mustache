@@ -84,7 +84,7 @@ if((data.input) && (data.input.files)){
 //ARGUMENTS
 Module['arguments'] = [];
 
-if((data.input) && (data.input.argv)){	
+if((data.input) && (data.input.argv)){
 	var argv = data.input.argv;
 	argv.forEach(function(arg){
 		Module['arguments'][arg.pos] = arg.arg;

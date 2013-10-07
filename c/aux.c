@@ -41,8 +41,17 @@ CvPoint* getFurthestPoint(CvSeq *contour, int Cx, int Cy){
 // args: img, mask, mask_not, thresh1, thresh2
 int main(int argc, char* argv[]){
 
+  for(int i = 0; i < argc; i++) {
+    printf("argv[%d]=%s\n|", i, argv[i]);
+  }
+
+  char* file_name = argv[1];
+
+  printf("FileName: %s\n", file_name);
+
   //Extract the color information
-  IplImage *mouse = cvLoadImage("mouse.jpg",CV_LOAD_IMAGE_COLOR);
+  // IplImage *mouse = cvLoadImage("mouse.jpg",CV_LOAD_IMAGE_COLOR);
+  IplImage *mouse = cvLoadImage(file_name, CV_LOAD_IMAGE_COLOR);
 
   //get mouse image info
   int width = mouse->width;
@@ -58,6 +67,8 @@ int main(int argc, char* argv[]){
   IplImage *hue = cvCreateImage(cvSize(width , height), depth, 1);
   IplImage *sat = cvCreateImage(cvSize(width , height), depth, 1);
   IplImage *img = cvCreateImage(cvSize(width , height), depth, 1);
+  printf("width: %d\n", width);
+  printf("height: %d\n", height);
 
   cvCvtColor(mouse, hsv, CV_RGB2HSV);
   cvSplit(hsv, hue, sat, img, (CvArr*) NULL);
@@ -141,7 +152,7 @@ int main(int argc, char* argv[]){
   }
 
   // save image
-  cvSaveImage("threshold.jpg", mouse);
+  cvSaveImage(file_name, mouse);
 
   cvReleaseImage(&mouse);
 

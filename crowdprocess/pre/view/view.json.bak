@@ -7,10 +7,17 @@
         "input": {
           "argv": [],
           "files": [
+            {
+              "name": "mouse.jpg",
+              "content": "../../photo/mouse.jpg"
+            }
           ]
         },
         "output": {
           "files": [
+            {
+              "name": "/threshold.jpg"
+            }
           ]
         }
       }
