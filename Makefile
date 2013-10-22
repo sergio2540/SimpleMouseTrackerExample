@@ -28,10 +28,10 @@ EXEC=aux
 
 LIBJS= ../crowdprocess/libs/libcv.a ../crowdprocess/libs/libcvaux.a ../crowdprocess/libs/libhighgui.a ../crowdprocess/libs/libcxcore.a ../crowdprocess/libs/libml.a
 
-#Emscripten C compiler
-#EMCC=path/to/emscripten/emcc
-#Example:
-#EMCC= /home/sergio/emscripten/emcc 
+# Emscripten C compiler
+# EMCC=path/to/emscripten/emcc
+# Example:
+# EMCC= /home/sergio/emscripten/emcc
 EMCC=~/utils/emscripten/emcc
 
 #Flags for emscripten C compiler
@@ -43,7 +43,7 @@ EMCCFLAGS=-O2
 #See https://github.com/kripken/emscripten/blob/master/src/settings.js
 SETTINGS= -s ASMJS=1 -s INVOKE_RUN=0 -s TOTAL_MEMORY=8*16777216
 
-DATA= ../data/data.json
+DATA=../data/data.json
 
 install:
 	sudo apt-get install python2.7
@@ -73,8 +73,8 @@ cp:
 	cat ./data/data.json | gencpd --compress ./lib/LZString > $(DATA) && \
 	cat ./view/view.json | gencpp --template ./template/template-node.mustache > ../build/$(EXEC)-node.js && \
 	cat ./view/view.json | gencpp --template ./template/template-crowdprocess.mustache > ../build/$(EXEC)-crowdprocess.js
-	uglifyjs $(CROWDPROCESS_DIR)/build/$(EXEC)-node.js -o $(CROWDPROCESS_DIR)/build/$(EXEC)-node.min.js -c --screw-ie8 
-	uglifyjs $(CROWDPROCESS_DIR)/build/$(EXEC)-crowdprocess.js -o $(CROWDPROCESS_DIR)/build/$(EXEC)-crowdprocess.min.js -c --screw-ie8 
+	# uglifyjs $(CROWDPROCESS_DIR)/build/$(EXEC)-node.js -o $(CROWDPROCESS_DIR)/build/$(EXEC)-node.min.js -c --screw-ie8 
+	# uglifyjs $(CROWDPROCESS_DIR)/build/$(EXEC)-crowdprocess.js -o $(CROWDPROCESS_DIR)/build/$(EXEC)-crowdprocess.min.js -c --screw-ie8 
 
 run-node:
 	node $(CROWDPROCESS_DIR)/build/aux-node.js 

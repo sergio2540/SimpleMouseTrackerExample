@@ -11,8 +11,8 @@ var spawn = require('child_process').spawn;
 var LZString = require('./pre/lib/LZString');
 
 // Authentication credentials
-var userEmail = 'email';
-var userPwd = 'password';
+var userEmail = 'pedroafonso@crowdprocess.com';
+var userPwd = 'blablabla';
 
 //Authentication using your CrowdProcess login information
 AuthClient.login(userEmail, userPwd, function(err, credential) {
